@@ -138,8 +138,8 @@ p{ margin: 0; }
 
 .site-nav{
   position: sticky; top: 0; z-index: 100;
-  background: rgba(245,246,250,0.85);
-  backdrop-filter: blur(10px) saturate(1.4);
+  background: var(--paper);
+
   border-bottom: 1px solid var(--border);
 }
 .site-nav .container{ display: flex; align-items: center; justify-content: space-between; height: 68px; gap: var(--space-4); }
@@ -336,7 +336,6 @@ p{ margin: 0; }
 .fav-btn{
   position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%;
   background: rgba(16,19,31,0.45); border: none; color: #fff; font-size: 16px;
-  display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);
   transition: background .15s, transform .15s;
 }
 .fav-btn:hover{ transform: scale(1.08); }
