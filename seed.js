@@ -1,0 +1,1 @@
+const {store}=require('./server');console.log(`Seed ready: ${store.properties.length} property, ${store.users.length} user(s). Admin login: admin@campusnest.test / admin123`);
