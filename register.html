@@ -18,7 +18,7 @@
   </div>
 
   <div class="auth-form-side">
-    <div class="auth-box">
+    <div class="auth-box" id="form-box">
       <a href="index.html" class="brand"><span class="brand-mark">CN</span>CampusNest</a>
       <h1>Create your account</h1>
       <p>Search verified homes, or list a property for students to find.</p>
@@ -26,14 +26,22 @@
       <form id="register-form">
         <div class="form-group" style="margin-top:0;">
           <label>I am a</label>
-          <div class="role-toggle" id="role-toggle">
+          <div class="role-toggle" style="grid-template-columns:1fr 1fr 1fr;">
             <label class="role-opt active"><input type="radio" name="role" value="student" checked>Student</label>
-            <label class="role-opt"><input type="radio" name="role" value="agent">Agent / Landlord</label>
+            <label class="role-opt"><input type="radio" name="role" value="landlord">Landlord</label>
+            <label class="role-opt"><input type="radio" name="role" value="agent">Agent</label>
           </div>
         </div>
         <div class="form-group">
           <label for="full_name">Full name</label>
           <input type="text" id="full_name" required placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="university">University</label>
+          <select id="university" required>
+            <option value="DELSU Abraka">DELSU Abraka</option>
+            <option value="FUPRE">FUPRE</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="email">Email address</label>
@@ -47,17 +55,27 @@
           <label for="password">Password</label>
           <input type="password" id="password" required minlength="8" placeholder="At least 8 characters">
         </div>
-        <button type="submit" class="btn btn-primary btn-block auth-submit">Create account</button>
+        <div class="form-error" id="register-error"></div>
+        <button type="submit" class="btn btn-primary btn-block auth-submit" id="register-submit">Create account</button>
       </form>
 
       <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
     </div>
+
+    <div class="auth-box" id="confirm-box" style="display:none; text-align:center;">
+      <div class="stamp" style="margin:0 auto 20px;"><span class="stamp-text"><span class="stamp-check">✉️</span>Check<br>your email</span></div>
+      <h1 style="font-size:22px;">Almost there</h1>
+      <p style="margin-top:10px;">We sent a confirmation link to <strong id="confirm-email"></strong>. Tap it to activate your account, then come back and log in.</p>
+      <a href="login.html" class="btn btn-ghost btn-block" style="margin-top:24px;">Go to login</a>
+    </div>
   </div>
 </div>
 
-<script src="js/auth.js"></script>
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
+<script>
+  window.CAMPUSNEST_SUPABASE_URL = 'https://fdwrlyxwpktzkatgdyng.supabase.co';
+  window.CAMPUSNEST_SUPABASE_ANON_KEY = 'sb_publishable_vLRcflayz_QrPg20nABw0Q_N_QwoM29';
+</script>
+<script src="js/supabase-config.js"></script>
 <script>
   document.querySelectorAll('.role-opt').forEach(opt => {
     opt.addEventListener('click', () => {
@@ -68,23 +86,39 @@
 
   document.getElementById('register-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const role = document.querySelector('input[name="role"]:checked').value;
-    const payload = {
-      full_name: document.getElementById('full_name').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      password: document.getElementById('password').value,
-      role: role === 'agent' ? 'landlord' : 'student',
-    };
+    const errorEl = document.getElementById('register-error');
+    const submitBtn = document.getElementById('register-submit');
+    errorEl.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Creating account…';
 
-    const result = await CampusNestAPI.register(payload);
-    if (result && result.token) {
-      Auth.login({ token: result.token, role: payload.role, user: result.user || payload });
-    } else {
-      Auth.login({ token: 'demo-token', role: payload.role, user: payload });
-      showToast('Account created (demo mode — backend not connected yet)', 'default');
+    const role = document.querySelector('input[name="role"]:checked').value;
+    const name = document.getElementById('full_name').value.trim();
+    const university = document.getElementById('university').value;
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+
+    try {
+      const supabase = await window.campusNestSupabaseReady;
+      if (!supabase) throw new Error('Could not connect to the account system. Please try again shortly.');
+
+      const { data, error } = await supabase.auth.signUp({
+        email, password,
+        options: { data: { name, phone, university, role } },
+      });
+
+      if (error) throw error;
+
+      document.getElementById('form-box').style.display = 'none';
+      document.getElementById('confirm-box').style.display = 'block';
+      document.getElementById('confirm-email').textContent = email;
+    } catch (err) {
+      errorEl.textContent = err.message || 'Something went wrong. Please try again.';
+      errorEl.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Create account';
     }
-    window.location.href = payload.role === 'landlord' ? 'dashboard-landlord.html' : 'dashboard-student.html';
   });
 </script>
 </body>
