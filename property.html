@@ -1,1 +1,67 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home details | CampusNest</title><link rel="stylesheet" href="css/styles.css"></head><body><header class="site-header"><nav class="container nav"><a class="logo" href="index.html">Campus<span>Nest</span></a><div class="nav-links"><a href="browse.html">Find a home</a><span data-auth-nav></span></div></nav></header><main class="container detail" id="detail-content"></main><script src="js/auth.js"></script><script src="js/api.js"></script><script src="js/app.js"></script><script src="js/property-detail.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property details — CampusNest</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="brand-mark">CN</span>CampusNest</a>
+    <ul class="nav-links">
+      <li><a href="browse.html">Find housing</a></li>
+      <li><a href="dashboard-landlord.html">List a property</a></li>
+      <li><a href="index.html#how-it-works">How it works</a></li>
+      <li data-auth="guest"><a href="login.html">Log in</a></li>
+      <li data-auth="user"><a href="dashboard-student.html">My dashboard</a></li>
+      <li data-auth="user"><a href="#" data-action="logout">Log out</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="register.html" class="btn btn-primary btn-sm" data-auth="guest">Register</a>
+      <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<section class="section-tight">
+  <div class="container">
+    <a href="browse.html" style="font-size:13.5px;color:var(--muted);">← Back to search</a>
+
+    <div class="detail-gallery mt-6" id="gallery">
+      <div class="detail-gallery-main"><div class="skeleton" style="height:100%;"></div></div>
+      <div class="detail-gallery-side">
+        <div class="skeleton" style="height:100%;"></div>
+        <div class="skeleton" style="height:100%;"></div>
+      </div>
+    </div>
+
+    <div class="detail-layout">
+      <div id="detail-main">
+        <div class="skeleton" style="height:240px;"></div>
+      </div>
+
+      <aside class="contact-card" id="contact-card">
+        <div class="skeleton" style="height:200px;"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; margin-top:0; padding-top:0;">
+      <span>© <span class="js-year"></span> CampusNest. Built for better student living.</span>
+      <span><a href="mailto:hello@campusnest.ng">hello@campusnest.ng</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/property-detail.js"></script>
+</body>
+</html>

@@ -1,1 +1,226 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CampusNest | Verified student homes</title><link rel="stylesheet" href="css/styles.css"></head><body><header class="site-header"><nav class="container nav"><a class="logo" href="index.html">Campus<span>Nest</span></a><div class="nav-links"><a href="browse.html">Find a home</a><span data-auth-nav></span></div></nav></header><main><section class="hero"><div class="container hero-grid"><div><div class="eyebrow">Student housing, checked properly</div><h1>Find a place that feels like home.</h1><p>Verified student rentals around DELSU Abraka and FUPRE, with clear prices, real details, and people you can reach.</p><div class="hero-actions"><a class="btn" href="browse.html">Explore homes</a><a class="btn secondary" href="register.html">List your property</a></div></div><div class="hero-photo"><div class="stamp">VERIFIED<br>FOR STUDENTS</div></div></div></section><section class="section"><div class="container"><div class="section-head"><div><div class="eyebrow">A better search</div><h2>Homes worth moving for.</h2></div><a class="btn ghost" href="browse.html">View all</a></div><div id="featured" class="grid"></div></div></section><section class="section campus-band"><div class="container"><div class="eyebrow">Choose your campus</div><h2>Closer to what matters.</h2><div class="campus-grid"><a class="campus" href="browse.html?campus=DELSU+Abraka"><b>DELSU Abraka</b><span>Site 1, Site 2, Campus 3 and beyond.</span></a><a class="campus" href="browse.html?campus=FUPRE"><b>FUPRE</b><span>Comfortable stays around the Energy campus.</span></a></div></div></section></main><footer class="footer"><div class="container">CampusNest · Verified student housing in Delta State</div></footer><script src="js/auth.js"></script><script src="js/api.js"></script><script src="js/app.js"></script><script src="js/property-card.js"></script><script>CampusNestAPI.getProperties().then(p=>{featured.innerHTML=p.slice(0,3).map(propertyCard).join('');wireFavorites(featured)});</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusNest — Find verified student housing in Delta State</title>
+<meta name="description" content="Verified rooms and apartments around DELSU Abraka and FUPRE, curated for the way students actually live.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="brand-mark">CN</span>CampusNest</a>
+    <ul class="nav-links">
+      <li><a href="browse.html">Find housing</a></li>
+      <li><a href="dashboard-landlord.html">List a property</a></li>
+      <li><a href="index.html#how-it-works">How it works</a></li>
+      <li data-auth="guest"><a href="login.html">Log in</a></li>
+      <li data-auth="user"><a href="dashboard-student.html">My dashboard</a></li>
+      <li data-auth="user"><a href="#" data-action="logout">Log out</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="register.html" class="btn btn-primary btn-sm" data-auth="guest">Register</a>
+      <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-grid">
+    <div class="reveal in">
+      <span class="eyebrow">Delta State · Student Living</span>
+      <h1>Find a place that feels like <em>home.</em></h1>
+      <p class="hero-sub">Verified rooms and apartments around DELSU Abraka and FUPRE, curated for the way students actually live — reviewed before they ever go live.</p>
+
+      <div class="search-card">
+        <form class="search-grid" action="browse.html" method="get">
+          <div class="field">
+            <label for="q">What are you looking for?</label>
+            <input type="text" id="q" name="q" placeholder="Area, landmark or property name">
+          </div>
+          <div class="field">
+            <label for="campus">Campus</label>
+            <select id="campus" name="campus">
+              <option>All campuses</option>
+              <option>DELSU Abraka</option>
+              <option>FUPRE</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="type">Room type</label>
+            <select id="type" name="property_type">
+              <option value="">Any type</option>
+              <option>Self-contain</option>
+              <option>Room & Parlour</option>
+              <option>Mini Flat</option>
+              <option>Flat</option>
+              <option>Shared</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Search homes</button>
+        </form>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><b>2</b><span>Campuses covered</span></div>
+        <div class="hero-stat"><b>100%</b><span>Listings reviewed</span></div>
+        <div class="hero-stat"><b>24/7</b><span>Direct agent contact</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal in">
+      <div class="hero-photo-stack">
+        <div class="hero-photo-main">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&q=80" alt="Bright student apartment living room">
+        </div>
+        <div class="hero-photo-sub">
+          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80" alt="Cosy self-contain room with desk">
+        </div>
+        <div class="hero-stamp-wrap">
+          <div class="stamp"><span class="stamp-text"><span class="stamp-check">✓</span>Verified<br>by CampusNest</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why students choose us</span>
+      <h2>Built for the risks students actually face.</h2>
+    </div>
+    <div class="feature-grid reveal">
+      <div class="feature">
+        <div class="feature-icon">✓</div>
+        <h3>Verified listings</h3>
+        <p>Every property is checked before it goes live — no fake photos, no ghost agents.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎓</div>
+        <h3>Built around campus</h3>
+        <p>Filter by walking distance to DELSU or FUPRE, not vague "close to school" claims.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💬</div>
+        <h3>Talk to real agents</h3>
+        <p>Message the landlord or agent directly on the platform — no middleman fees hidden in the process.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure platform</h3>
+        <p>Your search stays private. Accounts are role-based for students, agents and landlords.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Homes worth coming home to</span>
+      <h2>Recently verified</h2>
+    </div>
+    <div class="property-grid reveal" id="featured-grid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+    <div class="text-center mt-6">
+      <a href="browse.html" class="btn btn-ghost">See all homes →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-navy" id="how-it-works">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">A better way to search</span>
+      <h2>Move in with confidence.</h2>
+    </div>
+    <div class="step-row reveal">
+      <div class="step">
+        <h3>Search your campus</h3>
+        <p>Filter by location, home type and budget around the place you actually study.</p>
+      </div>
+      <div class="step">
+        <h3>Check the details</h3>
+        <p>See real photos, amenities and the verification stamp on every home before you commit.</p>
+      </div>
+      <div class="step">
+        <h3>Connect directly</h3>
+        <p>Reach the landlord or agent the moment you find a space that fits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Launch areas</span>
+      <h2>Choose your campus</h2>
+    </div>
+    <div class="campus-grid reveal">
+      <a class="campus-card" href="browse.html?campus=DELSU%20Abraka">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80" alt="DELSU Abraka campus area">
+        <div class="campus-card-body">
+          <span class="eyebrow">01 · Delta State University</span>
+          <h3>DELSU Abraka</h3>
+          <p>Student homes around Abraka campus →</p>
+        </div>
+      </a>
+      <a class="campus-card" href="browse.html?campus=FUPRE">
+        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80" alt="FUPRE campus area">
+        <div class="campus-card-body">
+          <span class="eyebrow">02 · Federal Univ. of Petroleum Resources</span>
+          <h3>FUPRE</h3>
+          <p>Find your place near Effurun →</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand" style="color:#fff"><span class="brand-mark">CN</span>CampusNest</a>
+        <p>Verified student housing for Delta State. Built for better student living.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul><li><a href="browse.html">Browse homes</a></li><li><a href="index.html#how-it-works">How it works</a></li><li><a href="register.html">Create account</a></li></ul>
+      </div>
+      <div>
+        <h4>For agents</h4>
+        <ul><li><a href="dashboard-landlord.html">List a property</a></li><li><a href="login.html">Landlord login</a></li></ul>
+      </div>
+      <div>
+        <h4>Need help?</h4>
+        <ul><li><a href="mailto:hello@campusnest.ng">hello@campusnest.ng</a></li><li>Delta State, Nigeria</li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span class="js-year"></span> CampusNest. Built for better student living.</span>
+      <span>DELSU Abraka · FUPRE</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/property-card.js"></script>
+<script src="js/app.js"></script>
+<script>
+  (async function loadFeatured() {
+    const grid = document.getElementById('featured-grid');
+    const { data } = await CampusNestAPI.getProperties();
+    renderPropertyGrid(grid, data.slice(0, 6));
+  })();
+</script>
+</body>
+</html>

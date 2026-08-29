@@ -1,1 +1,111 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Property dashboard | CampusNest</title><link rel="stylesheet" href="css/styles.css"></head><body><header class="site-header"><nav class="container nav"><a class="logo" href="index.html">Campus<span>Nest</span></a><div class="nav-links"><a href="browse.html">Find a home</a><span data-auth-nav></span></div></nav></header><main class="container dashboard"><div class="eyebrow">Property workspace</div><h1>Manage your homes.</h1><section class="form-panel"><h2 id="property-form-title">Add a property</h2><form id="add-property"><input type="hidden" name="id"><div class="filter-row"><div class="field"><label>Title</label><input name="title" required></div><div class="field"><label>Price</label><input name="price" type="number" min="1" required></div><div class="field"><label>Price period</label><select name="price_period"><option value="year">Per year</option><option value="month">Per month</option><option value="week">Per week</option></select></div></div><div class="filter-row"><div class="field"><label>University</label><input name="university" required></div><div class="field"><label>Location</label><input name="location" required></div><div class="field"><label>Area</label><input name="area" required></div></div><div class="filter-row"><div class="field"><label>Property type</label><select name="property_type"><option>Self-contained</option><option>Single room</option><option>Room and parlour</option><option>Shared apartment</option><option>Flat</option><option>Hostel</option></select></div><div class="field"><label>Bedrooms</label><input name="bedrooms" type="number" min="0" value="1" required></div><div class="field"><label>Bathrooms</label><input name="bathrooms" type="number" min="0" value="1" required></div></div><div class="filter-row"><div class="field"><label>Amenities</label><input name="amenities" placeholder="Water, security, Wi-Fi"></div><div class="field"><label>Availability</label><select name="availability"><option value="available">Available</option><option value="unavailable">Unavailable</option></select></div></div><div class="field"><label>Description</label><textarea name="description" rows="4"></textarea></div><div class="field"><label>Photos</label><input id="property-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><div id="image-preview" class="grid"></div></div><button class="btn" type="submit" id="property-submit">Submit for verification</button><button class="btn ghost" type="button" id="property-cancel" hidden>Cancel edit</button></form></section><section class="section"><h2>My listings</h2><div class="table-wrap"><table class="table"><thead><tr><th>Property</th><th>Price</th><th>Location</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody id="listing-rows"></tbody></table></div></section></main><script src="js/auth.js"></script><script src="js/api.js"></script><script src="js/app.js"></script><script>Auth.whenReady().then(()=>{if(!Auth.isLoggedIn()||!(Auth.isLandlord()||Auth.isAgent()))location.href='login.html';});</script><script src="js/dashboard-landlord.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landlord dashboard — CampusNest</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <a href="index.html" class="brand"><span class="brand-mark">CN</span>CampusNest</a>
+    <nav class="dash-nav">
+      <a href="dashboard-landlord.html" class="active"><span class="nav-icon">🏘️</span>My listings</a>
+      <a href="#add" id="nav-add-listing"><span class="nav-icon">＋</span>Add property</a>
+      <a href="#profile"><span class="nav-icon">👤</span>Profile</a>
+      <a href="#" data-action="logout"><span class="nav-icon">↪</span>Log out</a>
+    </nav>
+  </aside>
+
+  <main class="dash-main">
+    <div class="dash-topbar">
+      <div>
+        <button class="dash-mobile-toggle icon-btn">☰</button>
+        <h1>Your listings</h1>
+      </div>
+      <button class="btn btn-primary" id="open-add-form">＋ Add property</button>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="label">Total listings</div><div class="value" id="stat-total">—</div></div>
+      <div class="stat-card"><div class="label">Verified</div><div class="value" id="stat-verified">—</div></div>
+      <div class="stat-card"><div class="label">Pending review</div><div class="value" id="stat-pending">—</div></div>
+      <div class="stat-card"><div class="label">Total views</div><div class="value" id="stat-views">312</div></div>
+    </div>
+
+    <div class="panel" id="add-form-panel" style="display:none; margin-bottom: var(--space-6);">
+      <div class="panel-head"><h3>Add a new property</h3><button class="icon-btn" id="close-add-form">✕</button></div>
+      <form id="add-form" style="padding: var(--space-5); display:grid; grid-template-columns:1fr 1fr; gap: var(--space-4);">
+        <div class="form-group" style="margin-top:0; grid-column: 1/-1;">
+          <label for="p-title">Property title</label>
+          <input type="text" id="p-title" required placeholder="e.g. Self-contain near DELSU back gate">
+        </div>
+        <div class="form-group" style="margin-top:0;">
+          <label for="p-campus">Campus</label>
+          <select id="p-campus" required>
+            <option value="DELSU Abraka">DELSU Abraka</option>
+            <option value="FUPRE">FUPRE</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:0;">
+          <label for="p-type">Property type</label>
+          <select id="p-type" required>
+            <option>Self-contain</option>
+            <option>Room & Parlour</option>
+            <option>Mini Flat</option>
+            <option>Flat</option>
+            <option>Shared</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:0;">
+          <label for="p-price">Price per year (₦)</label>
+          <input type="number" id="p-price" required placeholder="200000">
+        </div>
+        <div class="form-group" style="margin-top:0;">
+          <label for="p-bedrooms">Bedrooms</label>
+          <input type="number" id="p-bedrooms" required min="1" value="1">
+        </div>
+        <div class="form-group" style="margin-top:0; grid-column:1/-1;">
+          <label for="p-area">Area / landmark</label>
+          <input type="text" id="p-area" required placeholder="e.g. Abraka, behind Faculty of Science">
+        </div>
+        <div class="form-group" style="margin-top:0; grid-column:1/-1;">
+          <label for="p-amenities">Amenities (comma separated)</label>
+          <input type="text" id="p-amenities" placeholder="Prepaid meter, Water, Tiled floor, Security">
+        </div>
+        <div class="form-group" style="margin-top:0; grid-column:1/-1;">
+          <label for="p-photos">Photos</label>
+          <input type="file" id="p-photos" accept="image/*" multiple>
+          <p class="form-hint">Listings are reviewed before they appear publicly.</p>
+        </div>
+        <div style="grid-column:1/-1; display:flex; gap:10px;">
+          <button type="submit" class="btn btn-primary">Submit for review</button>
+          <button type="button" class="btn btn-ghost" id="cancel-add-form">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h3>All properties</h3></div>
+      <div style="overflow-x:auto;">
+        <table class="data-table" id="listings-table">
+          <thead>
+            <tr><th>Property</th><th>Type</th><th>Price</th><th>Status</th><th>Views</th><th></th></tr>
+          </thead>
+          <tbody id="listings-tbody">
+            <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Loading your listings…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard-landlord.js"></script>
+</body>
+</html>

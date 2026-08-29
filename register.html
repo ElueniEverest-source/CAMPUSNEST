@@ -1,1 +1,91 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Join CampusNest</title><link rel="stylesheet" href="css/styles.css"></head><body><header class="site-header"><nav class="container nav"><a class="logo" href="index.html">Campus<span>Nest</span></a><a href="login.html">Log in</a></nav></header><main class="auth-page"><form class="auth-box" id="auth-form" data-mode="register"><div class="eyebrow">Join the nest</div><h1>Create account</h1><div class="role-toggle"><button type="button" class="active" data-role="student">Student</button><button type="button" data-role="landlord">Landlord</button><button type="button" data-role="agent">Agent</button></div><div class="field"><label>Full name</label><input name="name" required></div><div class="field"><label>Email</label><input type="email" name="email" required></div><div class="field"><label>Phone</label><input type="tel" name="phone"></div><div class="field"><label>University</label><input name="university"></div><div class="field"><label>Password</label><input type="password" name="password" minlength="6" required></div><button class="btn" type="submit">Create account</button></form></main><script src="js/auth.js"></script><script src="js/api.js"></script><script src="js/app.js"></script><script src="js/auth-pages.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create your account — CampusNest</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-visual">
+    <a href="index.html" class="brand" style="color:#fff"><span class="brand-mark">CN</span>CampusNest</a>
+    <div>
+      <p class="auth-quote">"Listing my apartment took ten minutes. Verified students started messaging the same week."</p>
+      <p class="auth-quote-by">— An agent, Effurun</p>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-box">
+      <a href="index.html" class="brand"><span class="brand-mark">CN</span>CampusNest</a>
+      <h1>Create your account</h1>
+      <p>Search verified homes, or list a property for students to find.</p>
+
+      <form id="register-form">
+        <div class="form-group" style="margin-top:0;">
+          <label>I am a</label>
+          <div class="role-toggle" id="role-toggle">
+            <label class="role-opt active"><input type="radio" name="role" value="student" checked>Student</label>
+            <label class="role-opt"><input type="radio" name="role" value="agent">Agent / Landlord</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="full_name">Full name</label>
+          <input type="text" id="full_name" required placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" id="email" required placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone / WhatsApp number</label>
+          <input type="tel" id="phone" required placeholder="080XXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required minlength="8" placeholder="At least 8 characters">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block auth-submit">Create account</button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.querySelectorAll('.role-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.role-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+    });
+  });
+
+  document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const role = document.querySelector('input[name="role"]:checked').value;
+    const payload = {
+      full_name: document.getElementById('full_name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      password: document.getElementById('password').value,
+      role: role === 'agent' ? 'landlord' : 'student',
+    };
+
+    const result = await CampusNestAPI.register(payload);
+    if (result && result.token) {
+      Auth.login({ token: result.token, role: payload.role, user: result.user || payload });
+    } else {
+      Auth.login({ token: 'demo-token', role: payload.role, user: payload });
+      showToast('Account created (demo mode — backend not connected yet)', 'default');
+    }
+    window.location.href = payload.role === 'landlord' ? 'dashboard-landlord.html' : 'dashboard-student.html';
+  });
+</script>
+</body>
+</html>

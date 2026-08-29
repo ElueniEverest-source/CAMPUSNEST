@@ -1,1 +1,48 @@
-document.addEventListener('DOMContentLoaded', async () => { const stats = document.querySelector('#admin-stats'); const table = document.querySelector('#pending-rows'); const users = document.querySelector('#user-rows'); const reports = document.querySelector('#report-rows'); const labels = [['totalUsers', 'Users'], ['students', 'Students'], ['landlords', 'Landlords'], ['agents', 'Agents'], ['totalProperties', 'Properties'], ['pendingProperties', 'Pending'], ['approvedProperties', 'Approved'], ['rejectedProperties', 'Rejected'], ['removedProperties', 'Removed'], ['pendingReports', 'Reports']]; try { const data = await CampusNestAPI.getAdminStats(); stats.innerHTML = labels.map(([key, label]) => `<article class="property-card"><div class="property-body"><small class="muted">${label}</small><h2>${Number(data[key] || 0).toLocaleString()}</h2></div></article>`).join(''); } catch { stats.innerHTML = '<div class="empty">Unable to load statistics.</div>'; } try { const data = await CampusNestAPI.getPendingListings(); table.innerHTML = data.length ? data.map((property) => `<tr><td><a href="property.html?id=${encodeURIComponent(property.id)}">${App.escapeHtml(property.title)}</a></td><td>${App.escapeHtml(property.owner_name || 'Unknown')}</td><td>${App.escapeHtml(property.location || property.area || '')}</td><td><button class="btn green" data-action="approved" data-id="${property.id}">Approve</button> <button class="btn ghost" data-action="rejected" data-id="${property.id}">Reject</button> <button class="btn ghost" data-action="removed" data-id="${property.id}">Remove</button></td></tr>`).join('') : '<tr><td colspan="4">Approval queue is clear.</td></tr>'; table.querySelectorAll('[data-action]').forEach((button) => button.onclick = async () => { let reason = ''; if (button.dataset.action === 'rejected') { reason = window.prompt('Rejection reason'); if (!reason?.trim()) return; } try { await CampusNestAPI.moderateProperty(button.dataset.id, button.dataset.action, reason); App.showToast(`Listing ${button.dataset.action}`); location.reload(); } catch (error) { App.showToast(error.message, 'error'); } }); } catch { table.innerHTML = '<tr><td colspan="4">Unable to load properties.</td></tr>'; } try { const data = await CampusNestAPI.getAdminUsers(); users.innerHTML = data.map((user) => `<tr><td>${App.escapeHtml(user.name)}</td><td>${App.escapeHtml(user.email)}</td><td>${App.escapeHtml(user.role)}</td><td>${App.escapeHtml(user.university || '')}</td><td>${new Date(user.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="5">No users found.</td></tr>'; } catch { users.innerHTML = '<tr><td colspan="5">Unable to load users.</td></tr>'; } try { const data = await CampusNestAPI.getAdminReports(); reports.innerHTML = data.length ? data.map((report) => `<article class="property-card"><div class="property-body"><h3>${App.escapeHtml(report.properties?.title || 'Property report')}</h3><p><strong>${App.escapeHtml(report.reason)}</strong></p><p>${App.escapeHtml(report.description)}</p><button class="btn" data-report="reviewed" data-id="${report.id}">Mark reviewed</button> <button class="btn green" data-report="resolved" data-id="${report.id}">Resolve</button> <button class="btn ghost" data-report="dismissed" data-id="${report.id}">Dismiss</button></div></article>`).join('') : '<div class="empty">No pending reports.</div>'; reports.querySelectorAll('[data-report]').forEach((button) => button.onclick = async () => { try { await CampusNestAPI.updateReport(button.dataset.id, button.dataset.report); location.reload(); } catch (error) { App.showToast(error.message, 'error'); } }); } catch { reports.innerHTML = '<div class="empty">Unable to load reports.</div>'; } });
+document.addEventListener('DOMContentLoaded', async () => {
+  const tbody = document.getElementById('pending-tbody');
+  const { data: pending } = await CampusNestAPI.getPendingListings();
+
+  document.getElementById('stat-pending').textContent = pending.length;
+
+  if (!pending.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Nothing waiting on review right now.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = '';
+  pending.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.dataset.id = p.id;
+    const img = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=200&q=80';
+    tr.innerHTML = `
+      <td><div style="display:flex; align-items:center; gap:10px;"><img class="table-thumb" src="${img}" alt=""><span class="row-title">${escapeHtml(p.title)}</span></div></td>
+      <td>${escapeHtml(p.owner_name || 'Agent')}</td>
+      <td>${escapeHtml(p.campus || '')}</td>
+      <td style="font-family:var(--font-mono);">${formatNaira(p.price)}</td>
+      <td>Today</td>
+      <td><div class="table-actions">
+        <button class="icon-btn" data-approve="${escapeHtml(p.id)}" title="Approve" style="color:var(--emerald-deep); border-color:var(--emerald-tint);">✓</button>
+        <button class="icon-btn" data-reject="${escapeHtml(p.id)}" title="Reject" style="color:var(--danger); border-color:var(--danger-tint);">✕</button>
+      </div></td>`;
+    tbody.appendChild(tr);
+  });
+
+  tbody.addEventListener('click', async (e) => {
+    const approveId = e.target.getAttribute('data-approve');
+    const rejectId = e.target.getAttribute('data-reject');
+    const id = approveId || rejectId;
+    if (!id) return;
+    const status = approveId ? 'verified' : 'rejected';
+    await CampusNestAPI.moderateProperty(id, status);
+    const row = e.target.closest('tr');
+    row.style.opacity = '0';
+    row.style.transition = 'opacity .25s';
+    setTimeout(() => {
+      row.remove();
+      const remaining = tbody.querySelectorAll('tr').length;
+      document.getElementById('stat-pending').textContent = remaining;
+      if (!remaining) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:30px;">Nothing waiting on review right now.</td></tr>`;
+    }, 250);
+    showToast(approveId ? 'Listing approved and now live' : 'Listing rejected', approveId ? 'success' : 'error');
+  });
+});
