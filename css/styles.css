@@ -146,7 +146,7 @@ p{ margin: 0; }
 .brand{ display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--navy-ink); }
 .brand-mark{
   width: 34px; height: 34px; border-radius: 10px;
-  background: url('assets/logo-icon.png') center/contain no-repeat;
+  background: url('../assets/logo-icon.png') center/contain no-repeat;
   display: flex; align-items: center; justify-content: center;
   color: transparent; font-size: 0;
   flex-shrink: 0;
