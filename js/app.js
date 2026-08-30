@@ -74,3 +74,27 @@ function escapeHtml(str) {
   div.textContent = str == null ? '' : String(str);
   return div.innerHTML;
 }
+
+/* ---------- PWA setup: inject manifest + register service worker ---------- */
+(function initPWA() {
+  const manifestLink = document.createElement('link');
+  manifestLink.rel = 'manifest';
+  manifestLink.href = '/manifest.json';
+  document.head.appendChild(manifestLink);
+
+  const themeColor = document.createElement('meta');
+  themeColor.name = 'theme-color';
+  themeColor.content = '#1E3A8A';
+  document.head.appendChild(themeColor);
+
+  const appleIcon = document.createElement('link');
+  appleIcon.rel = 'apple-touch-icon';
+  appleIcon.href = '/assets/logo-icon.png';
+  document.head.appendChild(appleIcon);
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+    });
+  }
+})();
