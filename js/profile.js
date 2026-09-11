@@ -68,7 +68,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       fillForm(currentProfile);
       showDisplay();
     } catch (err) {
-      showError('Something went wrong loading your profile.');
+      showError('Something went wrong loading your profile: ' + err.message);
+      console.error(err);
     }
   }
 
