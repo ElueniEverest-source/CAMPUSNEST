@@ -481,7 +481,9 @@ p{ margin: 0; }
   .dash-sidebar{ position: fixed; left: 0; top: 0; width: 250px; transform: translateX(-100%); transition: transform .25s var(--ease); z-index: 200; }
   .dash-sidebar.open{ transform: translateX(0); }
   .dash-main{ padding: var(--space-5); }
-  .dash-mobile-toggle{ display: inline-flex; }
+  .dash-mobile-toggle{ display: inline-flex; position: relative; z-index: 250; }
+  .dash-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:199; }
+  .dash-overlay.open{ display:block; }
   .data-table{ display: block; overflow-x: auto; white-space: nowrap; }
 }
 

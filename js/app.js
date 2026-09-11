@@ -18,7 +18,25 @@ function initDashSidebarToggle() {
   const toggle = document.querySelector('.dash-mobile-toggle');
   const sidebar = document.querySelector('.dash-sidebar');
   if (!toggle || !sidebar) return;
-  toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+
+  let overlay = document.querySelector('.dash-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'dash-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+
+  toggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    overlay.classList.toggle('open', isOpen);
+  });
+
+  overlay.addEventListener('click', closeSidebar);
 }
 
 function initFooterYear() {
