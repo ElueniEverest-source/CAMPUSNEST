@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  try {
   const displayEl = document.getElementById('profile-display');
   const formEl = document.getElementById('profile-form');
   const loadingEl = document.getElementById('loading-msg');
@@ -110,4 +111,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   loadProfile();
+  } catch (topErr) {
+    document.body.insertAdjacentHTML('afterbegin', '<div style="background:red;color:white;padding:1rem;">SCRIPT ERROR: ' + topErr.message + '</div>');
+    console.error(topErr);
+  }
 });
