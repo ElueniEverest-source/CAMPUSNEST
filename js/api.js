@@ -15,7 +15,8 @@ const ENDPOINTS = {
   users: `${API_BASE}/api/users`,
   login: `${API_BASE}/api/users/login`,
   register: `${API_BASE}/api/users/register`,
-  me: `${API_BASE}/api/users/me`,
+  me: `${API_BASE}/api/users/profile`,
+  updateMe: `${API_BASE}/api/users/profile`,
   admin: `${API_BASE}/api/admin`,
   adminPending: `${API_BASE}/api/admin/properties?status=pending`,
   adminModerate: (id) => `${API_BASE}/api/admin/properties/${id}`,
@@ -75,6 +76,16 @@ const CampusNestAPI = (() => {
     return local.includes(propertyId);
   }
 
+
+  async function getMe() {
+    const data = await safeFetch(ENDPOINTS.me);
+    return { data, isLive: !!data };
+  }
+
+  async function updateProfile(payload) {
+    return safeFetch(ENDPOINTS.updateMe, { method: 'PATCH', body: JSON.stringify(payload) });
+  }
+
   async function login(email, password) {
     return safeFetch(ENDPOINTS.login, { method: 'POST', body: JSON.stringify({ email, password }) });
   }
@@ -98,7 +109,7 @@ const CampusNestAPI = (() => {
   }
 
   return {
-    getProperties, getProperty, getFavorites, toggleFavorite, isFavoritedLocal,
+    getProperties, getProperty, getFavorites, toggleFavorite, isFavoritedLocal, getMe, updateProfile,
     login, register, getMyListings, getPendingListings, moderateProperty,
     ENDPOINTS,
   };

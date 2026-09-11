@@ -1,102 +1,112 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  await Auth.whenReady();
-  // Redirect if not logged in
-  if (!Auth.isLoggedIn()) {
-    location.href = 'login.html';
-    return;
+  const displayEl = document.getElementById('profile-display');
+  const formEl = document.getElementById('profile-form');
+  const loadingEl = document.getElementById('loading-msg');
+  const errorEl = document.getElementById('error-msg');
+  const editBtn = document.getElementById('edit-btn');
+  const cancelBtn = document.getElementById('cancel-btn');
+
+  let currentProfile = null;
+
+  function showLoading() {
+    loadingEl.style.display = 'block';
+    displayEl.style.display = 'none';
+    formEl.style.display = 'none';
+    errorEl.style.display = 'none';
   }
 
-  const profileDisplay = document.querySelector('#profile-display');
-  const profileForm = document.querySelector('#profile-form');
-  const loadingMsg = document.querySelector('#loading-msg');
-  const editBtn = document.querySelector('#edit-btn');
-  const cancelBtn = document.querySelector('#cancel-btn');
-  const errorDiv = document.querySelector('#error-msg');
+  function showDisplay() {
+    loadingEl.style.display = 'none';
+    displayEl.style.display = 'block';
+    formEl.style.display = 'none';
+    errorEl.style.display = 'none';
+  }
 
-  // Load profile
+  function showForm() {
+    loadingEl.style.display = 'none';
+    displayEl.style.display = 'none';
+    formEl.style.display = 'block';
+    errorEl.style.display = 'none';
+  }
+
+  function showError(msg) {
+    loadingEl.style.display = 'none';
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+
+  function renderDisplay(profile) {
+    document.getElementById('display-name').textContent = profile.name || '—';
+    document.getElementById('display-email').textContent = profile.email || '—';
+    document.getElementById('display-role').textContent = profile.role || '—';
+    document.getElementById('display-created').textContent = profile.created_at
+      ? new Date(profile.created_at).toLocaleDateString()
+      : '—';
+  }
+
+  function fillForm(profile) {
+    formEl.querySelector('[name="name"]').value = profile.name || '';
+    formEl.querySelector('[name="email"]').value = profile.email || '';
+    if (formEl.querySelector('[name="phone"]')) {
+      formEl.querySelector('[name="phone"]').value = profile.phone || '';
+    }
+    if (formEl.querySelector('[name="university"]')) {
+      formEl.querySelector('[name="university"]').value = profile.university || '';
+    }
+  }
+
   async function loadProfile() {
-    loadingMsg.style.display = 'block';
-    profileDisplay.style.display = 'none';
-    profileForm.style.display = 'none';
-    errorDiv.style.display = 'none';
-
+    showLoading();
     try {
-      const profile = await CampusNestAPI.getProfile();
-      
-      document.querySelector('#display-name').textContent = profile.name;
-      document.querySelector('#display-email').textContent = profile.email;
-      document.querySelector('#display-role').textContent = profile.role;
-      
-      if (profile.created_at) {
-        const date = new Date(profile.created_at);
-        document.querySelector('#display-created').textContent = date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
+      const result = await CampusNestAPI.getMe();
+      if (!result || !result.data) {
+        showError('Could not load your profile. Please try again.');
+        return;
       }
-
-      // Populate form
-      profileForm.querySelector('input[name="name"]').value = profile.name;
-      profileForm.querySelector('input[name="email"]').value = profile.email;
-
-      loadingMsg.style.display = 'none';
-      profileDisplay.style.display = 'block';
+      currentProfile = result.data;
+      renderDisplay(currentProfile);
+      fillForm(currentProfile);
+      showDisplay();
     } catch (err) {
-      console.error('Error loading profile:', err);
-      errorDiv.textContent = 'Failed to load profile. Please refresh the page.';
-      errorDiv.style.display = 'block';
-      loadingMsg.style.display = 'none';
-      profileDisplay.style.display = 'block';
+      showError('Something went wrong loading your profile.');
     }
   }
 
-  // Edit mode
-  editBtn.onclick = () => {
-    profileDisplay.style.display = 'none';
-    profileForm.style.display = 'block';
-    errorDiv.style.display = 'none';
-  };
+  editBtn.addEventListener('click', () => {
+    showForm();
+  });
 
-  // Cancel edit
-  cancelBtn.onclick = () => {
-    profileDisplay.style.display = 'block';
-    profileForm.style.display = 'none';
-    errorDiv.style.display = 'none';
-  };
+  cancelBtn.addEventListener('click', () => {
+    fillForm(currentProfile);
+    showDisplay();
+  });
 
-  // Save changes
-  profileForm.onsubmit = async (e) => {
+  formEl.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const submitBtn = profileForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Saving...';
-    errorDiv.style.display = 'none';
+    const payload = {
+      name: formEl.querySelector('[name="name"]').value.trim(),
+      email: formEl.querySelector('[name="email"]').value.trim(),
+    };
+    if (formEl.querySelector('[name="phone"]')) {
+      payload.phone = formEl.querySelector('[name="phone"]').value.trim();
+    }
+    if (formEl.querySelector('[name="university"]')) {
+      payload.university = formEl.querySelector('[name="university"]').value;
+    }
 
     try {
-      const body = {
-        name: profileForm.querySelector('input[name="name"]').value,
-        email: profileForm.querySelector('input[name="email"]').value
-      };
-
-      await CampusNestAPI.updateProfile(body);
-      App.showToast('Profile updated successfully', 'success');
-      
-      // Reload and return to display
-      profileDisplay.style.display = 'block';
-      profileForm.style.display = 'none';
-      await loadProfile();
+      const result = await CampusNestAPI.updateProfile(payload);
+      if (!result) {
+        showError('Could not save changes. Please try again.');
+        return;
+      }
+      currentProfile = { ...currentProfile, ...payload };
+      renderDisplay(currentProfile);
+      showDisplay();
     } catch (err) {
-      console.error('Error updating profile:', err);
-      errorDiv.textContent = err.message || 'Failed to update profile. Try again.';
-      errorDiv.style.display = 'block';
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
+      showError('Something went wrong saving your profile.');
     }
-  };
+  });
 
-  // Initial load
-  await loadProfile();
+  loadProfile();
 });
