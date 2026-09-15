@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadingEl.style.display = 'none';
     errorEl.textContent = msg;
     errorEl.style.display = 'block';
+    alert('after: display=' + errorEl.style.display + ' | text=' + errorEl.textContent + ' | offsetHeight=' + errorEl.offsetHeight);
   }
 
   function renderDisplay(profile) {
