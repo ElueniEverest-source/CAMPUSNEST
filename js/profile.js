@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  alert('profile.js is running');
   try {
   const displayEl = document.getElementById('profile-display');
   const formEl = document.getElementById('profile-form');
@@ -32,11 +31,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function showError(msg) {
-    alert('showError called with: ' + msg);
     loadingEl.style.display = 'none';
     errorEl.textContent = msg;
     errorEl.style.display = 'block';
-    alert('after: display=' + errorEl.style.display + ' | text=' + errorEl.textContent + ' | offsetHeight=' + errorEl.offsetHeight);
   }
 
   function renderDisplay(profile) {
@@ -60,12 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function loadProfile() {
-    alert('about to call showLoading');
     showLoading();
-    alert('showLoading done, about to fetch');
     try {
       const result = await CampusNestAPI.getMe();
-      alert('fetch done, result: ' + JSON.stringify(result));
       if (!result || !result.data) {
         showError('Could not load your profile. Please try again.');
         return;

@@ -43,7 +43,9 @@
         <a href="password-reset.html" class="btn" style="background: #f3f4f6; color: #1e3a8a; text-decoration: none; display: inline-block; text-align: center;">Change Password</a>
       </div>
 
-      <form id="profile-form" style="display: none;">
+      <div id="error-msg" class="error-msg" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #fee2e2; color: #991b1b; border-radius: 6px;"></div>
+
+          <form id="profile-form" style="display: none;">
         <div class="field">
           <label>Full Name</label>
           <input type="text" name="name" required>
@@ -67,8 +69,6 @@
               <option value="FUPRE">FUPRE</option>
             </select>
           </div>
-        
-        <div id="error-msg" class="error-msg" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #fee2e2; color: #991b1b; border-radius: 6px;"></div>
         
         <button class="btn" type="submit" id="save-btn">Save Changes</button>
         <button class="btn" type="button" id="cancel-btn" style="background: #f3f4f6; color: #1e3a8a;">Cancel</button>
