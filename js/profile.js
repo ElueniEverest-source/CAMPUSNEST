@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  alert('profile.js is running');
   try {
   const displayEl = document.getElementById('profile-display');
   const formEl = document.getElementById('profile-form');
