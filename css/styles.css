@@ -535,7 +535,8 @@ p{ margin: 0; }
   --border-strong: #38465A;
   --navy: #3B82F6;
   --navy-deep: #2563EB;
-  --navy-ink: #93C5FD;
+  --navy-ink: #0B1220;
+  --accent-blue: #93C5FD;
 }
 
 .theme-toggle {
