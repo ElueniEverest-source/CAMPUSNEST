@@ -1,5 +1,44 @@
+
+function initThemeToggle() {
+  const stored = localStorage.getItem('cn_theme');
+  if (stored === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  const nav = document.querySelector('.nav-actions');
+  if (!nav) return;
+
+  let btn = document.querySelector('.theme-toggle');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.className = 'theme-toggle';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Toggle dark mode');
+    nav.insertBefore(btn, nav.firstChild);
+  }
+
+  function updateIcon() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = isDark ? '\u2600' : '\u263D';
+  }
+  updateIcon();
+
+  btn.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('cn_theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('cn_theme', 'dark');
+    }
+    updateIcon();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavToggle();
+  initThemeToggle();
   initFooterYear();
   initScrollReveal();
   initNavAuthState();

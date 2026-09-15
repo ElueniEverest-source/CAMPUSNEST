@@ -523,3 +523,31 @@ p{ margin: 0; }
 
 .text-center{ text-align: center; }
 .mt-6{ margin-top: var(--space-6); }
+
+[data-theme="dark"] {
+  --paper: #0F1720;
+  --surface: #17212B;
+  --ink: #F2F5F7;
+  --ink-soft: #C7D0D6;
+  --muted: #8A97A0;
+  --faint: #5A6670;
+  --border: #263140;
+  --border-strong: #38465A;
+  --navy: #3B82F6;
+  --navy-deep: #2563EB;
+  --navy-ink: #93C5FD;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--ink);
+}
