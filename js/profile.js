@@ -58,9 +58,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function loadProfile() {
+    alert('about to call showLoading');
     showLoading();
+    alert('showLoading done, about to fetch');
     try {
       const result = await CampusNestAPI.getMe();
+      alert('fetch done, result: ' + JSON.stringify(result));
       if (!result || !result.data) {
         showError('Could not load your profile. Please try again.');
         return;
