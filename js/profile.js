@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function showError(msg) {
+    alert('showError called with: ' + msg);
     loadingEl.style.display = 'none';
     errorEl.textContent = msg;
     errorEl.style.display = 'block';
