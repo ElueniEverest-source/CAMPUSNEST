@@ -13,7 +13,7 @@ const requireSupabase = (res) => { if (!supabase) { res.status(503).json({ error
 async function authenticateUser(req, res, next) {
   const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   if (!token) return res.status(401).json({ error: 'Authentication required' });
-  if (!requireSupabase(res)) return;
+  if (requireSupabase(res)) return;
   const { data, error } = await supabase.auth.getUser(token);
   if (error || !data.user) return res.status(401).json({ error: 'Authentication required' });
   const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
