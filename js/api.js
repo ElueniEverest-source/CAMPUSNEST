@@ -35,6 +35,7 @@ const CampusNestAPI = (() => {
       return await res.json();
     } catch (err) {
       console.warn(`[CampusNest] API call failed for ${url}, using fallback where available.`, err.message);
+      alert(`API FAILED: ${url} — ${err.message}`);
       return null;
     }
   }
