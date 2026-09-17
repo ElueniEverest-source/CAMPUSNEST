@@ -18,7 +18,9 @@ async function authenticateUser(req, res, next) {
   const token = (req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   if (!token) return res.status(401).json({ error: 'Authentication required' });
   if (requireSupabase(res)) return;
+  console.log("AUTH: about to call getUser");
   const { data, error } = await supabase.auth.getUser(token);
+  console.log("AUTH: getUser finished", { error });
   if (error || !data.user) return res.status(401).json({ error: 'Authentication required' });
   const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user.id).single();
   if (profileError || !profile) {
