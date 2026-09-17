@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors');
 app.use(cors({ origin: 'https://campusnest.space' }));
 app.use((req, res, next) => { console.log(new Date().toISOString(), req.method, req.url); next(); });
+app.use((req, res, next) => { console.log(new Date().toISOString(), req.method, req.url); next(); });
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 const supabaseUrl = process.env.SUPABASE_URL;
