@@ -10,6 +10,7 @@
   --navy: #1E3A8A;
   --navy-deep: #142868;
   --navy-ink: #101a3d;
+  --heading-ink: #101a3d;
   --emerald: #10B981;
   --emerald-deep: #0B7A56;
   --emerald-tint: #E3F7EF;
@@ -85,7 +86,7 @@ ul{ margin: 0; padding: 0; list-style: none; }
   border-radius: 4px;
 }
 
-h1,h2,h3,h4{ font-family: var(--font-display); margin: 0; color: var(--navy-ink); line-height: 1.08; letter-spacing: -0.01em; }
+h1,h2,h3,h4{ font-family: var(--font-display); margin: 0; color: var(--heading-ink); line-height: 1.08; letter-spacing: -0.01em; }
 h1{ font-weight: 600; }
 h2{ font-weight: 600; }
 p{ margin: 0; }
@@ -458,7 +459,7 @@ p{ margin: 0; }
 .stat-row{ display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-bottom: var(--space-6); }
 .stat-card{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); }
 .stat-card .label{ font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-.stat-card .value{ font-family: var(--font-mono); font-size: 26px; color: var(--navy-ink); margin-top: 6px; }
+.stat-card .value{ font-family: var(--font-mono); font-size: 26px; color: var(--heading-ink); margin-top: 6px; }
 .stat-card .delta{ font-size: 12px; margin-top: 4px; color: var(--emerald-deep); font-weight: 600; }
 @media (max-width: 900px){ .stat-row{ grid-template-columns: 1fr 1fr; } }
 
@@ -496,7 +497,7 @@ p{ margin: 0; }
 
 .detail-layout{ display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--space-7); margin-top: var(--space-7); align-items: start; }
 .detail-title-row{ display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
-.detail-price{ font-family: var(--font-mono); font-size: 30px; font-weight: 600; color: var(--navy-ink); }
+.detail-price{ font-family: var(--font-mono); font-size: 30px; font-weight: 600; color: var(--heading-ink); }
 .detail-price span{ font-size: 14px; color: var(--muted); font-weight: 400; }
 .amenity-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .amenity-item{ display: flex; align-items: center; gap: 9px; font-size: 14px; color: var(--ink-soft); padding: 10px 0; }
@@ -536,6 +537,7 @@ p{ margin: 0; }
   --navy: #3B82F6;
   --navy-deep: #2563EB;
   --navy-ink: #0B1220;
+  --heading-ink: var(--ink);
   --accent-blue: #93C5FD;
 }
 
