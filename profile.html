@@ -1,10 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Profile | CampusNest</title>
-  <link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile | CampusNest</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header class="site-header">
@@ -17,61 +14,65 @@
   <main class="container">
     <section class="auth-box" id="profile-section" style="margin: 3rem auto; max-width: 500px;">
       <h1>My Profile</h1>
-      
+
       <div id="profile-display" style="display: none;">
         <div class="field">
           <label>Name</label>
-          <p id="display-name" class="profile-value" style="padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb;"></p>
+          <p id="display-name" class="profile-value"></p>
         </div>
-        
+
         <div class="field">
           <label>Email</label>
-          <p id="display-email" class="profile-value" style="padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb;"></p>
+          <p id="display-email" class="profile-value"></p>
         </div>
-        
+
         <div class="field">
           <label>Role</label>
-          <p id="display-role" class="profile-value" style="padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb; text-transform: capitalize;"></p>
+          <p id="display-role" class="profile-value" style="text-transform: capitalize;"></p>
         </div>
 
         <div class="field">
           <label>Member Since</label>
-          <p id="display-created" class="profile-value" style="padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb;"></p>
+          <p id="display-created" class="profile-value"></p>
         </div>
-        
-        <button class="btn" id="edit-btn" type="button">Edit Profile</button>
-        <a href="password-reset.html" class="btn" style="background: #f3f4f6; color: #1e3a8a; text-decoration: none; display: inline-block; text-align: center;">Change Password</a>
+
+        <div class="profile-actions">
+          <button class="btn btn-accent" id="edit-btn" type="button">Edit Profile</button>
+          <a href="password-reset.html" class="btn">Change Password</a>
+        </div>
       </div>
 
       <div id="error-msg" class="error-msg" style="display: none; margin-bottom: 1rem; padding: 0.75rem; background: #fee2e2; color: #991b1b; border-radius: 6px;"></div>
 
-          <form id="profile-form" style="display: none;">
+      <form id="profile-form" style="display: none;">
         <div class="field">
           <label>Full Name</label>
           <input type="text" name="name" required>
         </div>
-        
+
         <div class="field">
           <label>Email</label>
           <input type="email" name="email" required>
         </div>
 
-          <div class="field">
-            <label>Phone</label>
-            <input type="tel" name="phone">
-          </div>
+        <div class="field">
+          <label>Phone</label>
+          <input type="tel" name="phone">
+        </div>
 
-          <div class="field">
-            <label>University</label>
-            <select name="university" required>
-              <option value="">Select university</option>
-              <option value="DELSU Abraka">DELSU Abraka</option>
-              <option value="FUPRE">FUPRE</option>
-            </select>
-          </div>
-        
-        <button class="btn" type="submit" id="save-btn">Save Changes</button>
-        <button class="btn" type="button" id="cancel-btn" style="background: #f3f4f6; color: #1e3a8a;">Cancel</button>
+        <div class="field">
+          <label>University</label>
+          <select name="university" required>
+            <option value="">Select university</option>
+            <option value="DELSU Abraka">DELSU Abraka</option>
+            <option value="FUPRE">FUPRE</option>
+          </select>
+        </div>
+
+        <div class="profile-actions">
+          <button class="btn btn-accent" type="submit" id="save-btn">Save Changes</button>
+          <button class="btn" type="button" id="cancel-btn">Cancel</button>
+        </div>
       </form>
 
       <div id="loading-msg" style="display: none; text-align: center; padding: 2rem;">

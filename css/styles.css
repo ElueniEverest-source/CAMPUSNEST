@@ -554,3 +554,6 @@ p{ margin: 0; }
   font-size: 18px;
   color: var(--ink);
 }
+
+.profile-value{ padding: 0.75rem 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--paper); color: var(--ink); font-size: 14.5px; }
+.profile-actions{ display: flex; gap: var(--space-2); margin-top: var(--space-2); flex-wrap: wrap; }
