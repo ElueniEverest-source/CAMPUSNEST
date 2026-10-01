@@ -79,7 +79,7 @@ export default function PropertySubmit() {
     }
 
     if (videoFile) {
-      if (videoFile.size > 100 * 1024 * 1024) { setStatus('Video must be under 100MB'); setIsError(true); return }
+      if (videoFile.size > 50 * 1024 * 1024) { setStatus('Video must be under 50MB'); setIsError(true); return }
       const videoPath = `${user.id}/${propertyId}/${videoFile.name}`
       const { error: e3 } = await supabase.storage.from('videos').upload(videoPath, videoFile)
       if (e3) { setStatus(e3.message); setIsError(true); return }
