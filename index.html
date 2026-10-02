@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head><script>function show(m){document.body.innerHTML="<pre style='padding:16px;white-space:pre-wrap'>"+m+"</pre>"}window.addEventListener("error",function(e){show(e.message+" "+e.filename+":"+e.lineno)});window.addEventListener("unhandledrejection",function(e){show(String(e.reason&&e.reason.message||e.reason))});</script>
+  <head><script>function show(m){document.body.innerHTML="<pre style='padding:16px;color:#fff;background:#900;white-space:pre-wrap'>"+m+"</pre>"}window.addEventListener("error",function(e){show(e.message+" "+e.filename+":"+e.lineno)});window.addEventListener("unhandledrejection",function(e){show(String(e.reason&&e.reason.message||e.reason))});</script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/icons/icon-512.png" />
     <link rel="apple-touch-icon" href="/icons/icon-512.png" />
@@ -13,5 +13,5 @@
   <body>
     <div id="root"><p style="padding:16px;font-family:sans-serif">HTML loaded, waiting for app</p></div>
     <script type="module" src="/src/main.jsx"></script>
-  <script>setTimeout(function(){var r=document.getElementById("root");var d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:#fff;padding:12px;font:14px sans-serif";d.textContent="BANNER root children="+(r?r.children.length:"no root")+" htmlLen="+(r?r.innerHTML.length:0)+" path="+location.pathname;document.body.appendChild(d)},3000)</script></body>
+  <script>setTimeout(function(){var r=document.getElementById("root");var d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:#fff;padding:12px;font:14px sans-serif";d.textContent="BANNER2 body="+document.body.innerHTML.slice(0,300)+" ROOT children="+(r?r.children.length:"no root")+" htmlLen="+(r?r.innerHTML.length:0)+" path="+location.pathname;document.body.appendChild(d)},3000)</script></body>
 </html>
