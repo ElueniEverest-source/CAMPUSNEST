@@ -13,5 +13,5 @@
   <body>
     <div id="root"><p style="padding:16px;font-family:sans-serif">HTML loaded, waiting for app</p></div>
     <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <script>setTimeout(function(){var r=document.getElementById("root");var d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:#fff;padding:12px;font:14px sans-serif";d.textContent="BANNER root children="+(r?r.children.length:"no root")+" htmlLen="+(r?r.innerHTML.length:0)+" path="+location.pathname;document.body.appendChild(d)},3000)</script></body>
 </html>
