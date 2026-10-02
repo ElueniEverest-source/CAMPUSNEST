@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head><script>(function(){try{if(navigator.serviceWorker){navigator.serviceWorker.getRegistrations().then(function(rs){window.__sw=rs.length;rs.forEach(function(r){r.unregister()});if(rs.length&&!sessionStorage.getItem("swr")){sessionStorage.setItem("swr","1");if(window.caches){caches.keys().then(function(k){return Promise.all(k.map(function(x){return caches.delete(x)}))}).then(function(){location.reload()})}else{location.reload()}}})}}catch(e){}})();</script><script>function show(m){document.body.innerHTML="<pre style='padding:16px;color:#fff;background:#900;white-space:pre-wrap'>"+m+"</pre>"}window.addEventListener("error",function(e){show(e.message+" "+e.filename+":"+e.lineno)});window.addEventListener("unhandledrejection",function(e){show(String(e.reason&&e.reason.message||e.reason))});</script>
+  <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/icons/icon-512.png" />
     <link rel="apple-touch-icon" href="/icons/icon-512.png" />
@@ -11,7 +11,7 @@
     <title>CampusNest</title>
   </head>
   <body>
-    <div id="root"><p style="padding:16px;font-family:sans-serif">HTML loaded, waiting for app</p></div>
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-  <script>setTimeout(function(){var r=document.getElementById("root");var d=document.createElement("div");d.style.cssText="position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:#fff;padding:12px;font:14px sans-serif";d.textContent="BANNER3 sw="+window.__sw+" scripts="+Array.prototype.map.call(document.scripts,function(x){return x.src.slice(-30)}).join(",")+" body="+document.body.innerHTML.slice(0,300)+" ROOT children="+(r?r.children.length:"no root")+" htmlLen="+(r?r.innerHTML.length:0)+" path="+location.pathname;document.body.appendChild(d)},3000)</script><script type="module">var m=document.querySelector('script[type=module][src]');if(m){import(m.src).catch(function(e){var d=document.createElement("div");d.style.cssText="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#06c;color:#fff;padding:12px;font:14px sans-serif";d.textContent="REAL ERROR: "+(e&&e.message)+" | "+String(e&&e.stack).slice(0,400);document.body.appendChild(d)})}</script><script>setTimeout(function(){var d=document.createElement("div");d.style.cssText="position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#06c;color:#fff;padding:12px;font:13px sans-serif";d.textContent="UA: "+navigator.userAgent+" | modules="+("noModule" in HTMLScriptElement.prototype);document.body.appendChild(d)},2000)</script></body>
+  </body>
 </html>
