@@ -17,12 +17,6 @@ if ('caches' in window) {
   })
 }
 
-window.addEventListener('error', (e) => {
-  document.body.innerHTML = '<div style="padding:20px;font-family:monospace;color:red;white-space:pre-wrap;">CRASH: ' + e.message + '\n' + (e.error?.stack || '') + '</div>'
-})
-window.addEventListener('unhandledrejection', (e) => {
-  document.body.innerHTML = '<div style="padding:20px;font-family:monospace;color:red;white-space:pre-wrap;">PROMISE REJECTION: ' + (e.reason?.message || e.reason) + '</div>'
-})
 
 try {
   createRoot(document.getElementById('root')).render(
