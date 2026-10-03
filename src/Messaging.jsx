@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ArrowLeft, Send } from 'lucide-react'
 import { supabase } from './lib/supabaseClient'
+import UserProfileModal from './UserProfileModal'
 
 export async function startConversation(propertyId, agentId) {
   const { data: { user } } = await supabase.auth.getUser()
@@ -70,7 +71,8 @@ export function ChatWindow({ conversationId, onBack }) {
   const [messages, setMessages] = useState([])
   const [content, setContent] = useState('')
   const [userId, setUserId] = useState(null)
-  const [header, setHeader] = useState({ name: 'Conversation', property: '' })
+  const [header, setHeader] = useState({ name: 'Conversation', property: '', otherUserId: null })
+  const [showProfile, setShowProfile] = useState(false)
   const bodyRef = useRef(null)
 
   useEffect(() => {
@@ -80,13 +82,14 @@ export function ChatWindow({ conversationId, onBack }) {
 
       const { data: convo } = await supabase
         .from('conversations')
-        .select('*, properties(title), student:profiles!conversations_student_id_fkey(full_name), agent:profiles!conversations_agent_id_fkey(full_name)')
+        .select('*, properties(title), student:profiles!conversations_student_id_fkey(id, full_name), agent:profiles!conversations_agent_id_fkey(id, full_name)')
         .eq('id', conversationId)
         .single()
 
       if (convo) {
-        const otherName = convo.student_id === user.id ? convo.agent?.full_name : convo.student?.full_name
-        setHeader({ name: otherName || 'User', property: convo.properties?.title || '' })
+        const isStudent = convo.student_id === user.id
+        const other = isStudent ? convo.agent : convo.student
+        setHeader({ name: other?.full_name || 'User', property: convo.properties?.title || '', otherUserId: other?.id })
       }
 
       const { data } = await supabase.from('messages').select('*').eq('conversation_id', conversationId).order('created_at', { ascending: true })
@@ -117,7 +120,7 @@ export function ChatWindow({ conversationId, onBack }) {
         <div className="chat-header">
           <button className="btn-outline" style={{ padding: 6 }} onClick={onBack}><ArrowLeft size={16} /></button>
           <div>
-            <div>{header.name}</div>
+            <div className="header-name" onClick={() => header.otherUserId && setShowProfile(true)}>{header.name}</div>
             {header.property && <div style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-muted)' }}>{header.property}</div>}
           </div>
         </div>
@@ -131,6 +134,10 @@ export function ChatWindow({ conversationId, onBack }) {
           <button type="submit" style={{ padding: '0 14px' }}><Send size={16} /></button>
         </form>
       </div>
+
+      {showProfile && header.otherUserId && (
+        <UserProfileModal userId={header.otherUserId} onClose={() => setShowProfile(false)} />
+      )}
     </div>
   )
 }

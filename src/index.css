@@ -223,3 +223,25 @@ img { max-width: 100%; }
 
 .footer-links { text-align: center; padding: 20px; font-size: 12px; color: var(--text-muted); }
 .footer-links a { color: var(--text-muted); margin: 0 8px; }
+
+.profile-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.profile-modal {
+  background: var(--bg); border-radius: 16px; padding: 24px; max-width: 360px; width: 100%;
+  position: relative;
+}
+.profile-modal .close-btn {
+  position: absolute; top: 14px; right: 14px; background: var(--bg-elevated); border: none;
+  border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+}
+.profile-modal-avatar {
+  width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: var(--accent);
+  color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 26px;
+  margin: 0 auto 14px;
+}
+.profile-modal-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.profile-modal-row:last-child { border-bottom: none; }
+.profile-modal-row .label { color: var(--text-muted); }
+.chat-header .header-name { cursor: pointer; text-decoration: underline; text-decoration-color: var(--border); }
