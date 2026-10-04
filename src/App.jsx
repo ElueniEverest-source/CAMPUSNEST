@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { supabase } from './lib/supabaseClient'
 import Auth from './Auth'
@@ -34,7 +34,8 @@ function NavLink({ to, children, onClick }) {
   return <Link to={to} className={active ? 'active' : ''} onClick={onClick}>{children}</Link>
 }
 
-function AppShell() {
+function AppShell({ session }) {
+  const loggedIn = !!session
   const [menuOpen, setMenuOpen] = useState(false)
   const [role, setRole] = useState(null)
   const closeMenu = () => setMenuOpen(false)
@@ -69,7 +70,7 @@ function AppShell() {
           <NavLink to="/profile">Profile</NavLink>
           {isAdmin && <NavLink to="/admin">Admin</NavLink>}
           <DarkModeToggle />
-          <button className="btn-outline" style={{ marginLeft: 16 }} onClick={() => supabase.auth.signOut()}>Sign Out</button>
+          {loggedIn ? <button className="btn-outline" style={{ marginLeft: 16 }} onClick={() => supabase.auth.signOut()}>Sign Out</button> : <Link to="/login" className="btn-outline">Log in</Link>}
         </div>
 
         <button className="menu-toggle" onClick={() => setMenuOpen(o => !o)} aria-label="Menu">
@@ -89,7 +90,7 @@ function AppShell() {
           {isAdmin && <NavLink to="/admin" onClick={closeMenu}>Admin</NavLink>}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8 }}>
             <DarkModeToggle />
-            <button className="btn-outline" onClick={() => supabase.auth.signOut()}>Sign Out</button>
+            {loggedIn ? <button className="btn-outline" onClick={() => supabase.auth.signOut()}>Sign Out</button> : <Link to="/login" className="btn-outline">Log in</Link>}
           </div>
         </div>
       )}
@@ -97,12 +98,12 @@ function AppShell() {
       <Routes>
         <Route path="/" element={<Browse />} />
         <Route path="/map" element={<MapView />} />
-        <Route path="/submit" element={<PropertySubmit />} />
-        <Route path="/my-listings" element={<MyListings />} />
-        <Route path="/favorites" element={<FavoritesList />} />
-        <Route path="/messages" element={<MessagesPage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/submit" element={loggedIn ? <PropertySubmit /> : <Navigate to="/login" replace />} />
+        <Route path="/my-listings" element={loggedIn ? <MyListings /> : <Navigate to="/login" replace />} />
+        <Route path="/favorites" element={loggedIn ? <FavoritesList /> : <Navigate to="/login" replace />} />
+        <Route path="/messages" element={loggedIn ? <MessagesPage /> : <Navigate to="/login" replace />} />
+        <Route path="/profile" element={loggedIn ? <Profile /> : <Navigate to="/login" replace />} />
+        <Route path="/admin" element={loggedIn ? <AdminDashboard /> : <Navigate to="/login" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
@@ -136,7 +137,8 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/*" element={!session ? <Auth /> : <AppShell />} />
+          <Route path="/login" element={session ? <Navigate to="/" replace /> : <Auth />} />
+          <Route path="/*" element={<AppShell session={session} />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>

@@ -58,7 +58,7 @@ export default function ForgotPassword() {
     await supabase.auth.signOut()
     setLoading(false)
     show('Password updated. Taking you to log in...', false)
-    setTimeout(() => navigate('/'), 1500)
+    setTimeout(() => navigate('/login'), 1500)
   }
 
   return (
@@ -125,7 +125,7 @@ export default function ForgotPassword() {
         )}
 
         {message && <p className={`status-msg ${isError ? 'error' : ''}`}>{message}</p>}
-        <p style={{ marginTop: 16, fontSize: 13 }}><Link to="/">Back to login</Link></p>
+        <p style={{ marginTop: 16, fontSize: 13 }}><Link to="/login">Back to login</Link></p>
       </div>
     </div>
   )
