@@ -253,3 +253,8 @@ img { max-width: 100%; }
 @media (max-width: 1100px) {
   .navbar .desktop-links { gap: 8px; font-size: 13px; }
 }
+
+/* hamburger menu on every screen size */
+.navbar .desktop-links { display: none !important; }
+.navbar .menu-toggle { display: inline-flex !important; align-items: center; margin-left: auto; }
+.mobile-menu { display: flex !important; flex-direction: column; gap: 4px; }
