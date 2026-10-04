@@ -80,6 +80,8 @@ function AppShell({ session }) {
 
       {menuOpen && (
         <div className="mobile-menu">
+          <div className="menu-backdrop" onClick={closeMenu} />
+          <button className="drawer-close" onClick={closeMenu} aria-label="Close menu">×</button>
           <NavLink to="/" onClick={closeMenu}>Browse</NavLink>
           <NavLink to="/map" onClick={closeMenu}>Map</NavLink>
           {canSubmit && <NavLink to="/submit" onClick={closeMenu}>Submit</NavLink>}

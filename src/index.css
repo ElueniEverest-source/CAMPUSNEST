@@ -258,3 +258,11 @@ img { max-width: 100%; }
 .navbar .desktop-links { display: none !important; }
 .navbar .menu-toggle { display: inline-flex !important; align-items: center; margin-left: auto; }
 .mobile-menu { display: flex !important; flex-direction: column; gap: 4px; }
+
+/* side drawer menu */
+.mobile-menu { position: fixed !important; top: 0; right: 0; bottom: 0; width: min(280px, 82vw); z-index: 1000; background: #fff; color: #101a3d; padding: 64px 16px 24px; overflow-y: auto; box-shadow: -8px 0 24px rgba(0,0,0,.18); gap: 0 !important; animation: drawerIn .22s ease-out; }
+@keyframes drawerIn { from { right: -300px; } to { right: 0; } }
+.mobile-menu a { display: block; padding: 14px 8px; font-size: 16px; font-weight: 500; color: #101a3d; text-decoration: none; border-bottom: 1px solid #e5eaf3; }
+.mobile-menu a.active { color: #2563EB; }
+.mobile-menu .menu-backdrop { position: fixed; top: 0; bottom: 0; left: 0; width: calc(100vw - min(280px, 82vw)); background: rgba(0,0,0,.45); z-index: -1; }
+.mobile-menu .drawer-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; padding: 0; border: none; border-radius: 8px; background: #eef2ff; color: #2563EB; font-size: 22px; line-height: 1; cursor: pointer; }
