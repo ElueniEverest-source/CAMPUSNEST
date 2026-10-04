@@ -11,7 +11,7 @@ export default function MapView() {
 
       <div style={{ height: 500, borderRadius: 14, overflow: 'hidden', border: '1px solid var(--border)' }}>
         <MapContainer center={DELTA_STATE_CENTER} zoom={10} style={{ height: '100%', width: '100%' }}>
-          <TileLayer url="https://tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap contributors' />
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap contributors' maxZoom={19} />
         </MapContainer>
       </div>
     </div>

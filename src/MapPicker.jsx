@@ -29,7 +29,7 @@ export default function MapPicker({ area, position, onChange, readOnly = false }
   return (
     <div style={{ height: 220, borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)' }}>
       <MapContainer center={center} zoom={14} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
-        <TileLayer url="https://tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap contributors' />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap contributors' maxZoom={19} />
         {!readOnly && <ClickHandler onPick={onChange} />}
         {position && <Marker position={position} />}
       </MapContainer>
