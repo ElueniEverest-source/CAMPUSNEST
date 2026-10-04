@@ -245,3 +245,11 @@ img { max-width: 100%; }
 .profile-modal-row:last-child { border-bottom: none; }
 .profile-modal-row .label { color: var(--text-muted); }
 .chat-header .header-name { cursor: pointer; text-decoration: underline; text-decoration-color: var(--border); }
+
+/* keep navbar on one line */
+.navbar { flex-wrap: nowrap; gap: 12px; }
+.navbar .desktop-links { display: flex; flex-wrap: nowrap; align-items: center; gap: 14px; white-space: nowrap; }
+.navbar .desktop-links a, .navbar .desktop-links button { white-space: nowrap; flex-shrink: 0; }
+@media (max-width: 1100px) {
+  .navbar .desktop-links { gap: 8px; font-size: 13px; }
+}
