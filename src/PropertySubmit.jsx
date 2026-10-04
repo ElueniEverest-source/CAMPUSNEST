@@ -20,7 +20,7 @@ const PROPERTY_TYPES = [
   { value: 'other', label: 'Other' }
 ]
 
-const AMENITIES = [
+const PRESET_AMENITIES = [
   { value: 'wifi', label: 'WiFi' },
   { value: 'electricity', label: 'Electricity' },
   { value: 'parking', label: 'Parking' },
@@ -37,6 +37,7 @@ export default function PropertySubmit() {
   const [price, setPrice] = useState('')
   const [address, setAddress] = useState('')
   const [amenities, setAmenities] = useState([])
+  const [customAmenity, setCustomAmenity] = useState('')
   const [position, setPosition] = useState(null)
   const [photoFile, setPhotoFile] = useState(null)
   const [videoFile, setVideoFile] = useState(null)
@@ -45,6 +46,19 @@ export default function PropertySubmit() {
 
   function toggleAmenity(value) {
     setAmenities(prev => prev.includes(value) ? prev.filter(a => a !== value) : [...prev, value])
+  }
+
+  function addCustomAmenity() {
+    const trimmed = customAmenity.trim()
+    if (!trimmed) return
+    if (!amenities.includes(trimmed)) {
+      setAmenities(prev => [...prev, trimmed])
+    }
+    setCustomAmenity('')
+  }
+
+  function removeAmenity(value) {
+    setAmenities(prev => prev.filter(a => a !== value))
   }
 
   async function handleSubmit(e) {
@@ -115,10 +129,11 @@ export default function PropertySubmit() {
             <div className="field" style={{ flex: 1 }}><label>Price (₦/year)</label><input type="number" value={price} onChange={e => setPrice(e.target.value)} /></div>
             <div className="field" style={{ flex: 1 }}><label>Address</label><input value={address} onChange={e => setAddress(e.target.value)} /></div>
           </div>
+
           <div className="field">
             <label>Amenities</label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {AMENITIES.map(a => (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
+              {PRESET_AMENITIES.map(a => (
                 <button
                   type="button"
                   key={a.value}
@@ -129,7 +144,30 @@ export default function PropertySubmit() {
                 </button>
               ))}
             </div>
+
+            <div style={{ display: 'flex', gap: 8 }}>
+              <input
+                value={customAmenity}
+                onChange={e => setCustomAmenity(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomAmenity() } }}
+                placeholder="Add custom amenity (e.g. fan, table, chair)"
+                style={{ flex: 1 }}
+              />
+              <button type="button" className="btn-outline" onClick={addCustomAmenity}>Add</button>
+            </div>
+
+            {amenities.filter(a => !PRESET_AMENITIES.some(p => p.value === a)).length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
+                {amenities.filter(a => !PRESET_AMENITIES.some(p => p.value === a)).map(a => (
+                  <span key={a} className="pill active" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {a}
+                    <span onClick={() => removeAmenity(a)} style={{ cursor: 'pointer', fontWeight: 700 }}>×</span>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
+
           <div className="field">
             <label>Pin exact location on map (optional)</label>
             <MapPicker area={area} position={position} onChange={setPosition} />
